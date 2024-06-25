@@ -1,5 +1,6 @@
 import os
 import logging
+import re
 import PyPDF2
 import requests
 from flask import Flask, request, jsonify, Blueprint
@@ -36,10 +37,9 @@ def upload_file():
         logging.info("PDF text extracted successfully.")
 
         response = process_text_with_openai(text)
-        logging.debug(f"Raw API Response: {response}")  # Log raw API response
         extracted_data = parse_extracted_data(response['choices'][0]['text'])
-        logging.debug(f"Extracted Data: {extracted_data}")  # Log extracted data
-
+        
+        
     except Exception as e:
         logging.error(f"Error during PDF processing or API call: {e}", exc_info=True)
         return jsonify({'error': 'Failed to process PDF file or OpenAI API call'}), 500
@@ -53,7 +53,7 @@ def process_text_with_openai(text):
     }
     data = {
         "model": "gpt-3.5-turbo-instruct",
-        "prompt": f"Extract the name, email, phone number, and highest education campus from the following text: {text}",
+        "prompt": f"From the following text, extract only the person's name, email, phone number, and the name of the highest education institution. Please format the name of the institution to include only the first two to three words (like 'University' or 'College'),withoutv '-' without any additional details or descriptors. For example, 'Shenkar College - B.Design in Visual Communication' should be simplified to 'Shenkar College'. Avoid including any fields of study, specializations, or other details. Here is the text: {text}",
         "max_tokens": 150,
         "temperature": 0.5
     }
@@ -70,7 +70,7 @@ def parse_extracted_data(text):
     data = {}
     try:
         for line in text.strip().split('\n'):
-            key, value = line.split(':')
+            key, value = line.split(':', 1)
             data[key.strip()] = value.strip()
     except Exception as e:
         logging.error(f"Error parsing data: {e}")
