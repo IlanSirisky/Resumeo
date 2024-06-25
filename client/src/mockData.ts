@@ -1,8 +1,8 @@
 import { ParsedDataType } from "./types/parsedDataType";
 
 export const MockData: ParsedDataType = {
-  name: "Israel Israeli",
-  email: "israel1948@gmail.com",
-  phone: "054-1234567",
-  university: "Tel Aviv University",
+  Name: "Israel Israeli",
+  Email: "israel1948@gmail.com",
+  Phone: "054-1234567",
+  University: "Tel Aviv University",
 };

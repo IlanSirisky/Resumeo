@@ -32,9 +32,9 @@ const ItemTable = ({ email }: ItemTableProps) => {
           {!isLoading && (
             <Text type={Text.types.TEXT1}>No duplicates found</Text>
           )}
+          <NewItem />
         </>
       )}
-      <NewItem />
     </TableContainer>
   );
 };
