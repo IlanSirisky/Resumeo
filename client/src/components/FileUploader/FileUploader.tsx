@@ -13,9 +13,10 @@ import { StyledSubtext } from "../../styles/globalDivs";
 
 interface FileUploaderProps {
   onParseSuccess: (data: any) => void;
+  clearFile: () => void;
 }
 
-const FileUploader = ({ onParseSuccess }: FileUploaderProps) => {
+const FileUploader = ({ onParseSuccess, clearFile }: FileUploaderProps) => {
   const [file, setFile] = useState<File | null>(null);
   const { mutate: parseCV, status, error } = useParseCV();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -53,6 +54,7 @@ const FileUploader = ({ onParseSuccess }: FileUploaderProps) => {
 
   const handleRemoveFile = () => {
     setFile(null);
+    clearFile();
   };
 
   const isLoading = status === "pending";

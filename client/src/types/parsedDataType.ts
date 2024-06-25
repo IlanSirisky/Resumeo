@@ -1,6 +1,6 @@
 export interface ParsedDataType {
-  name: string;
-  email: string;
-  phone: string;
-  university: string;
+  Name: string;
+  Email: string;
+  Phone: string;
+  University: string;
 }

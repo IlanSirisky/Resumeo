@@ -16,7 +16,7 @@ const ParsedFieldsDisplay = ({
   data,
   onFieldChange,
 }: ParsedFieldsDisplayProps) => {
-  const { refetch } = useCheckDuplicates(data.email);
+  const { refetch } = useCheckDuplicates(data.Email);
 
   const handleCheckDuplicates = () => {
     refetch();
@@ -34,7 +34,7 @@ const ParsedFieldsDisplay = ({
         title="Full Name"
         placeholder="Insert Name"
         size={TextField.sizes.MEDIUM}
-        value={data.name}
+        value={data.Name}
         onChange={(value) => onFieldChange("name", value)}
         requiredAsterisk={true}
         className="custom-text-field-input"
@@ -44,7 +44,7 @@ const ParsedFieldsDisplay = ({
         type={TextField.types.EMAIL}
         placeholder="Insert Email"
         size={TextField.sizes.MEDIUM}
-        value={data.email}
+        value={data.Email}
         onChange={(value) => onFieldChange("email", value)}
         requiredAsterisk={true}
         iconName={Retry}
@@ -56,7 +56,7 @@ const ParsedFieldsDisplay = ({
         placeholder="Insert Phone Number"
         type={TextField.types.TEL}
         size={TextField.sizes.MEDIUM}
-        value={data.phone}
+        value={data.Phone}
         onChange={(value) => onFieldChange("phone", value)}
         className="custom-text-field-input"
       />
@@ -64,7 +64,7 @@ const ParsedFieldsDisplay = ({
         title="Education Institution"
         placeholder="Insert Education"
         size={TextField.sizes.MEDIUM}
-        value={data.university}
+        value={data.University}
         onChange={(value) => onFieldChange("university", value)}
         className="custom-text-field-input"
       />

@@ -1,17 +1,20 @@
 import { useState } from "react";
 import FileUploader from "./components/FileUploader/FileUploader";
 import ParsedFieldsDisplay from "./components/ParsedFieldsDisplay/ParsedFieldsDisplay";
-import DuplicateChecker from "./components/DuplicateChecker/DuplicateChecker";
+import ItemTable from "./components/ItemTable/ItemTable";
 import { ParsedDataType } from "./types/parsedDataType";
 import { AppWrapper } from "./styles/globalDivs";
 import Header from "./components/Header/Header";
-import { MockData } from "./mockData";
 
 function App() {
   const [parsedData, setParsedData] = useState<ParsedDataType>();
 
   const handleParseSuccess = (data: any) => {
     setParsedData(data);
+  };
+
+  const handleClearFile = () => {
+    setParsedData(undefined);
   };
 
   const handleFieldChange = (field: string, value: string) => {
@@ -21,17 +24,20 @@ function App() {
   return (
     <AppWrapper>
       <Header />
-      <FileUploader onParseSuccess={handleParseSuccess} />
+      <FileUploader
+        onParseSuccess={handleParseSuccess}
+        clearFile={handleClearFile}
+      />
 
-      {/* {parsedData && ( */}
+      {parsedData && (
         <>
           <ParsedFieldsDisplay
-            data={MockData}
+            data={parsedData}
             onFieldChange={handleFieldChange}
           />
-          <DuplicateChecker email={MockData.email} />
+          <ItemTable email={parsedData.Email} />
         </>
-      {/* )} */}
+      )}
     </AppWrapper>
   );
 }

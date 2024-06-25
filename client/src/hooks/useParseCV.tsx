@@ -3,10 +3,10 @@ import axios from "axios";
 
 export const parseCV = async (file: File): Promise<any> => {
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append("pdf", file);
 
   const response = await axios.post(
-    "https://api.your-backend-url.com/parse-cv",
+    "https://d7a70-service-1102328-e995e8aa.us.monday.app/upload",
     formData,
     {
       headers: {
@@ -14,7 +14,6 @@ export const parseCV = async (file: File): Promise<any> => {
       },
     }
   );
-
   return response.data;
 };
 
