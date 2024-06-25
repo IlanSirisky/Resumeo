@@ -1,12 +1,10 @@
 import { HeaderContainer } from "./styles";
-import moveoLogo from "../../assets/moveo-logo.svg";
-import { Heading } from "monday-ui-react-core/next";
+import resumeo from "../../assets/resumeo1.svg";
 
 const Header = () => {
   return (
     <HeaderContainer>
-      <img src={moveoLogo} alt="Moveo logo" style={{ height: "40px" }} />
-      <Heading type={Heading.types.H1}>Resumeo</Heading>
+      <img src={resumeo} alt="Moveo logo" style={{ height: "40px" }} />
     </HeaderContainer>
   );
 };

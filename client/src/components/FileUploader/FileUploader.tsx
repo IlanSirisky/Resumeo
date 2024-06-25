@@ -17,7 +17,7 @@ interface FileUploaderProps {
 
 const FileUploader = ({ onParseSuccess }: FileUploaderProps) => {
   const [file, setFile] = useState<File | null>(null);
-  const { mutate: parseCV, status } = useParseCV();
+  const { mutate: parseCV, status, error } = useParseCV();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +99,7 @@ const FileUploader = ({ onParseSuccess }: FileUploaderProps) => {
           {isLoading ? "Uploading..." : "Process CV"}
         </Button>
       )}
+      {error && <StyledSubtext>{error.message}</StyledSubtext>}
     </FileUploaderWrapper>
   );
 };
