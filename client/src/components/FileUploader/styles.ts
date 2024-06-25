@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { flexColumn, flexRow } from "../../styles/globalDivs";
 import { COLORS } from "../../styles/colors";
-import { Text } from "monday-ui-react-core";
 import { cssSpacing } from "../../styles/globalValues";
 
 export const FileUploaderWrapper = styled(flexColumn)`
@@ -15,13 +14,9 @@ export const DropZone = styled(flexColumn)`
   padding: ${cssSpacing.s20};
   align-items: center;
   gap: ${cssSpacing.s16};
-  width: 40%;
+  width: 400px;
   min-height: 120px;
   justify-content: center;
-`;
-
-export const StyledSubtext = styled(Text)`
-  color: ${COLORS.Secondary.S1};
 `;
 
 export const FileInfo = styled(flexRow)`

@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import FileUploader from "./components/FileUploader/FileUploader";
+import ParsedFieldsDisplay from "./components/ParsedFieldsDisplay/ParsedFieldsDisplay";
+import DuplicateChecker from "./components/DuplicateChecker/DuplicateChecker";
+import { ParsedDataType } from "./types/parsedDataType";
+import { AppWrapper } from "./styles/globalDivs";
+import Header from "./components/Header/Header";
+import { MockData } from "./mockData";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [parsedData, setParsedData] = useState<ParsedDataType>();
+
+  const handleParseSuccess = (data: any) => {
+    setParsedData(data);
+  };
+
+  const handleFieldChange = (field: string, value: string) => {
+    setParsedData((prevData: any) => ({ ...prevData, [field]: value }));
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AppWrapper>
+      <Header />
+      <FileUploader onParseSuccess={handleParseSuccess} />
+
+      {/* {parsedData && ( */}
+        <>
+          <ParsedFieldsDisplay
+            data={MockData}
+            onFieldChange={handleFieldChange}
+          />
+          <DuplicateChecker email={MockData.email} />
+        </>
+      {/* )} */}
+    </AppWrapper>
+  );
 }
 
-export default App
+export default App;

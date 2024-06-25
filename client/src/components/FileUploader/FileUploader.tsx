@@ -7,9 +7,9 @@ import {
   FileInfo,
   FileUploaderWrapper,
   RemoveFileButton,
-  StyledSubtext,
 } from "./styles";
 import { COLORS } from "../../styles/colors";
+import { StyledSubtext } from "../../styles/globalDivs";
 
 interface FileUploaderProps {
   onParseSuccess: (data: any) => void;

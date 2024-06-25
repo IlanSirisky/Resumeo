@@ -4,6 +4,6 @@ import { cssSpacing } from "../../styles/globalValues";
 
 export const HeaderContainer = styled(flexRow)`
   justify-content: center;
-  padding: ${cssSpacing.s24};
+  padding-top: ${cssSpacing.s24};
   gap: ${cssSpacing.s16};
 `;
