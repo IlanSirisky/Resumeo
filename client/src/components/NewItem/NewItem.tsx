@@ -5,6 +5,7 @@ import { useParsedData } from "../../contexts/dataContext";
 import { useEffect, useState } from "react";
 import { getGroups } from "../../hooks/useGetGroups";
 import { createItem } from "../../hooks/useCreateItem";
+import { institutionOptions } from "../../constants/institutionOptions";
 
 interface NewItemProps {
   existingItems?: boolean;
@@ -40,7 +41,10 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
     if (!parsedData || !selectedGroupId || !selectedGroupTitle) {
       return;
     }
-
+    const institute = institutionOptions.includes(parsedData.University)
+      ? parsedData.University
+      : "Other";
+      
     try {
       const newItem = await createItem(
         6888206890,
@@ -48,7 +52,8 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
         selectedGroupTitle,
         parsedData.Name,
         parsedData.Email,
-        parsedData.Phone
+        parsedData.Phone,
+        institute
       );
       console.log("Created new item:", newItem);
     } catch (error) {

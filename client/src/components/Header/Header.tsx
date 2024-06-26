@@ -1,5 +1,5 @@
 import { HeaderContainer } from "./styles";
-import resumeo from "../../assets/Resumeo logo.svg"
+import resumeo from "../../assets/ResumeoLogo.svg"
 
 const Header = () => {
   return (

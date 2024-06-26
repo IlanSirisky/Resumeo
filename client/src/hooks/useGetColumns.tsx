@@ -30,6 +30,6 @@ export const getBoardColumns = async (
   if (result.errors) {
     throw new Error(result.errors.map((err: any) => err.message).join(", "));
   }
-
+  
   return result.data.boards[0].columns;
 };

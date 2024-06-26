@@ -6,7 +6,8 @@ export const createItem = async (
   groupTitle: string,
   name: string,
   email: string,
-  phone: string
+  phone: string,
+  institution: string,
 ): Promise<any> => {
   const columnValues = JSON.stringify({
     email_1__1: {
@@ -15,6 +16,7 @@ export const createItem = async (
     },
     text6__1: phone,
     status0__1: groupTitle,
+    dropdown5__1 : institution,
   });
 
   const mutation = `
