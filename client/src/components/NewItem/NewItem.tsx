@@ -76,10 +76,14 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
       </select>
       <Button onClick={handleCreateItem}>Create an Item</Button>
       {createSuccess && (
-        <StyledSucessText type={Text.types.TEXT1}>Item created sucessfuly</StyledSucessText>
+        <StyledSucessText type={Text.types.TEXT1}>
+          Item created sucessfuly
+        </StyledSucessText>
       )}
       {createSuccess === false && (
-        <StyledErrorText type={Text.types.TEXT1}>Failed to create item</StyledErrorText>
+        <StyledErrorText type={Text.types.TEXT1}>
+          Failed to create item
+        </StyledErrorText>
       )}
     </NewItemContainer>
   );
