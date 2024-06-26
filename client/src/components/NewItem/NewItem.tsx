@@ -1,6 +1,6 @@
-import { Button } from "monday-ui-react-core";
+import { Button, Text } from "monday-ui-react-core";
 import { StyledSubtext } from "../../styles/globalDivs";
-import { NewItemContainer } from "./styles";
+import { NewItemContainer, StyledErrorText, StyledSucessText } from "./styles";
 import { useParsedData } from "../../contexts/dataContext";
 import { useEffect, useState } from "react";
 import { getGroups } from "../../hooks/useGetGroups";
@@ -18,6 +18,7 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
   const [selectedGroupTitle, setSelectedGroupTitle] = useState<string | null>(
     null
   );
+  const [createSuccess, setCreateSuccess] = useState<boolean | null>(null);
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -44,7 +45,7 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
     const institute = institutionOptions.includes(parsedData.University)
       ? parsedData.University
       : "Other";
-      
+
     try {
       const newItem = await createItem(
         6888206890,
@@ -56,8 +57,10 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
         institute
       );
       console.log("Created new item:", newItem);
+      setCreateSuccess(true);
     } catch (error) {
       console.error("Error creating item:", error);
+      setCreateSuccess(false);
     }
   };
 
@@ -72,6 +75,12 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
         ))}
       </select>
       <Button onClick={handleCreateItem}>Create an Item</Button>
+      {createSuccess && (
+        <StyledSucessText type={Text.types.TEXT1}>Item created sucessfuly</StyledSucessText>
+      )}
+      {createSuccess === false && (
+        <StyledErrorText type={Text.types.TEXT1}>Failed to create item</StyledErrorText>
+      )}
     </NewItemContainer>
   );
 };
