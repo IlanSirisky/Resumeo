@@ -1,26 +1,23 @@
 import { TextField } from "monday-ui-react-core";
 import { Heading } from "monday-ui-react-core/next";
-import { ParsedDataType } from "../../types/parsedDataType";
 import { ParsedDataContainer, ParsedDataHeading } from "./styles";
 import { StyledSubtext } from "../../styles/globalDivs";
 import { Retry } from "monday-ui-react-core/icons";
 import { useCheckDuplicates } from "../../hooks/useCheckDuplicates";
+import { useParsedData } from "../../contexts/dataContext";
 import "./parsedFieldsStyles.css";
 
-interface ParsedFieldsDisplayProps {
-  data: ParsedDataType;
-  onFieldChange: (field: string, value: string) => void;
-}
-
-const ParsedFieldsDisplay = ({
-  data,
-  onFieldChange,
-}: ParsedFieldsDisplayProps) => {
-  const { refetch } = useCheckDuplicates(data.Email);
+const ParsedFieldsDisplay = () => {
+  const { parsedData, handleFieldChange } = useParsedData();
+  const { refetch } = useCheckDuplicates(parsedData?.Email || "");
 
   const handleCheckDuplicates = () => {
     refetch();
   };
+
+  if (!parsedData) {
+    return null;
+  }
 
   return (
     <ParsedDataContainer>
@@ -34,8 +31,8 @@ const ParsedFieldsDisplay = ({
         title="Full Name"
         placeholder="Insert Name"
         size={TextField.sizes.MEDIUM}
-        value={data.Name}
-        onChange={(value) => onFieldChange("name", value)}
+        value={parsedData.Name}
+        onChange={(value) => handleFieldChange("Name", value)}
         requiredAsterisk={true}
         className="custom-text-field-input"
       />
@@ -44,8 +41,8 @@ const ParsedFieldsDisplay = ({
         type={TextField.types.EMAIL}
         placeholder="Insert Email"
         size={TextField.sizes.MEDIUM}
-        value={data.Email}
-        onChange={(value) => onFieldChange("email", value)}
+        value={parsedData.Email}
+        onChange={(value) => handleFieldChange("Email", value)}
         requiredAsterisk={true}
         iconName={Retry}
         onIconClick={handleCheckDuplicates}
@@ -56,16 +53,16 @@ const ParsedFieldsDisplay = ({
         placeholder="Insert Phone Number"
         type={TextField.types.TEL}
         size={TextField.sizes.MEDIUM}
-        value={data.Phone}
-        onChange={(value) => onFieldChange("phone", value)}
+        value={parsedData.Phone}
+        onChange={(value) => handleFieldChange("Phone", value)}
         className="custom-text-field-input"
       />
       <TextField
         title="Education Institution"
         placeholder="Insert Education"
         size={TextField.sizes.MEDIUM}
-        value={data.University}
-        onChange={(value) => onFieldChange("university", value)}
+        value={parsedData.University}
+        onChange={(value) => handleFieldChange("University", value)}
         className="custom-text-field-input"
       />
     </ParsedDataContainer>

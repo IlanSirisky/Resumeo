@@ -10,15 +10,10 @@ import {
 } from "./styles";
 import { COLORS } from "../../styles/colors";
 import { StyledSubtext } from "../../styles/globalDivs";
+import { useParsedData } from "../../contexts/dataContext";
 
-interface FileUploaderProps {
-  onParseSuccess: (data: any) => void;
-  clearFile: () => void;
-  file: File | null;
-  setFile: (file: File | null) => void;
-}
-
-const FileUploader = ({ onParseSuccess, clearFile, file, setFile }: FileUploaderProps) => {
+const FileUploader = () => {
+  const { file, setFile, handleParseSuccess, handleClearFile } = useParsedData();
   const { mutate: parseCV, status, error } = useParseCV();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -32,7 +27,7 @@ const FileUploader = ({ onParseSuccess, clearFile, file, setFile }: FileUploader
     if (file) {
       parseCV(file, {
         onSuccess: (data) => {
-          onParseSuccess(data);
+          handleParseSuccess(data);
         },
       });
     }
@@ -54,7 +49,7 @@ const FileUploader = ({ onParseSuccess, clearFile, file, setFile }: FileUploader
   };
 
   const handleRemoveFile = () => {
-    clearFile();
+    handleClearFile();
   };
 
   const isLoading = status === "pending";
