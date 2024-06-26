@@ -86,7 +86,7 @@ def parse_extracted_data(data):
             if key == "University":
                 # Handle potential multiple entries or additional descriptors
                 value = value.split(',')[0].strip()  # Take the first entry if there are multiple, comma-separated values
-                
+                value = value.replace('-', ' ').strip()  # Remove hyphens and strip any resulting leading/trailing whitespace
             parsed_data[key] = value
         else:
             logging.debug(f"Skipping line, no key-value pair: {line}")  # Changed to debug for lower importance
