@@ -1,0 +1,22 @@
+name: Security Pipeline
+
+# Trigger the pipeline on pull requests to the main branch
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  # Define the security scanning job
+  security:
+    name: Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3 # Checks out the code into the GitHub Actions runner
+
+      # Install Horusec and run security scan
+      - name: Running Horusec Security Scan
+        run: |
+              curl -fsSL https://raw.githubusercontent.com/ZupIT/horusec/master/deployments/scripts/install.sh | bash -s latest-beta
+              horusec start -p="./" -c="./.horusec-config.json" -s="LOW,MEDIUM,HIGH"

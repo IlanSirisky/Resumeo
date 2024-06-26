@@ -1,0 +1,11 @@
+{
+    "ignore": [
+        {
+            "type": "Vulnerability",
+            "rules": ["HS-LEAKS-25"],
+            "files": [
+                "server/app/__init__.py"
+            ]
+        }
+    ]
+}
