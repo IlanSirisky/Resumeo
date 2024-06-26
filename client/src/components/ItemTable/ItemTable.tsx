@@ -17,6 +17,7 @@ import { useParsedData } from "../../contexts/dataContext";
 import { getBoardColumns } from "../../hooks/useGetColumns";
 import { IColumnTypes, IItemTypes } from "../../types/mondayViewsTypes";
 import { ITableColumn } from "monday-ui-react-core/dist/types/components/Table/Table/Table.js";
+import { tableColumnTitles } from "../../constants/tableColumns";
 
 const ItemTable = () => {
   const { parsedData } = useParsedData();
@@ -46,11 +47,11 @@ const ItemTable = () => {
 
   const tableColumns: ITableColumn[] = [
     ...columns
-      .filter((column) => column.title !== "CV")
+    .filter((column) => tableColumnTitles.includes(column.title))
       .map((column) => ({
         id: column.id,
         title: column.title,
-        width: 125,
+        width: 175,
       })),
   ];
 
