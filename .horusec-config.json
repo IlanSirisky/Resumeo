@@ -3,9 +3,8 @@
         {
             "type": "Vulnerability",
             "rules": ["HS-LEAKS-25"],
-            "description": "Ignore reported hard-coded credential issue for environment variable retrieval as it is a false positive.",
             "files": [
-                "/server/app/__init__.py"
+                "server/app/__init__.py"
             ]
         }
     ]
