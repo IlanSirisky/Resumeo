@@ -8,12 +8,14 @@ import Header from "./components/Header/Header";
 
 function App() {
   const [parsedData, setParsedData] = useState<ParsedDataType>();
+  const [file, setFile] = useState<File | null>(null);
 
   const handleParseSuccess = (data: any) => {
     setParsedData(data);
   };
 
   const handleClearFile = () => {
+    setFile(null);
     setParsedData(undefined);
   };
 
@@ -25,6 +27,8 @@ function App() {
     <AppWrapper>
       <Header />
       <FileUploader
+        file={file}
+        setFile={setFile}
         onParseSuccess={handleParseSuccess}
         clearFile={handleClearFile}
       />

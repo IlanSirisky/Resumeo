@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useParseCV } from "../../hooks/useParseCV";
 import { Button } from "monday-ui-react-core";
 import { Heading } from "monday-ui-react-core/next";
@@ -14,10 +14,11 @@ import { StyledSubtext } from "../../styles/globalDivs";
 interface FileUploaderProps {
   onParseSuccess: (data: any) => void;
   clearFile: () => void;
+  file: File | null;
+  setFile: (file: File | null) => void;
 }
 
-const FileUploader = ({ onParseSuccess, clearFile }: FileUploaderProps) => {
-  const [file, setFile] = useState<File | null>(null);
+const FileUploader = ({ onParseSuccess, clearFile, file, setFile }: FileUploaderProps) => {
   const { mutate: parseCV, status, error } = useParseCV();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -53,7 +54,6 @@ const FileUploader = ({ onParseSuccess, clearFile }: FileUploaderProps) => {
   };
 
   const handleRemoveFile = () => {
-    setFile(null);
     clearFile();
   };
 
