@@ -1,10 +1,10 @@
-import { Button, Text } from "monday-ui-react-core";
+import { Button } from "monday-ui-react-core";
 import { StyledSubtext } from "../../styles/globalDivs";
-import { NewItemContainer, StyledErrorText, StyledSucessText } from "./styles";
+import { NewItemContainer } from "./styles";
 import { useParsedData } from "../../contexts/dataContext";
-import { useState } from "react";
 import { createItem } from "../../hooks/useCreateItem";
 import { institutionOptions } from "../../constants/institutionOptions";
+import monday from "../../configs/mondaySdk";
 
 interface NewItemProps {
   existingItems?: boolean;
@@ -12,12 +12,15 @@ interface NewItemProps {
 
 const NewItem = ({ existingItems = false }: NewItemProps) => {
   const { parsedData, boardId } = useParsedData();
-  const [createSuccess, setCreateSuccess] = useState<boolean | null>(null);
 
   const handleCreateItem = async () => {
     if (!parsedData || !boardId || !parsedData.position) {
       if (!parsedData?.position) {
-        setCreateSuccess(false);
+        monday.execute("notice", {
+          message: "Position is required",
+          type: "error",
+          timeout: 5000,
+        });
       }
       return;
     }
@@ -26,7 +29,7 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
       : "Other";
 
     try {
-      const newItem = await createItem(
+      await createItem(
         boardId,
         parsedData.position?.groupId,
         parsedData.position?.groupTitle,
@@ -35,11 +38,17 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
         parsedData.Phone,
         institute
       );
-      console.log("Created new item:", newItem);
-      setCreateSuccess(true);
+      monday.execute("notice", {
+        message: "Item created successfully",
+        type: "success",
+        timeout: 5000,
+      });
     } catch (error) {
-      console.error("Error creating item:", error);
-      setCreateSuccess(false);
+      monday.execute("notice", {
+        message: "Failed to create item",
+        type: "error",
+        timeout: 5000,
+      });
     }
   };
 
@@ -49,16 +58,6 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
       <Button onClick={handleCreateItem} size={Button.sizes.MEDIUM}>
         Create an Item
       </Button>
-      {createSuccess && (
-        <StyledSucessText type={Text.types.TEXT1}>
-          Item created sucessfuly
-        </StyledSucessText>
-      )}
-      {createSuccess === false && (
-        <StyledErrorText type={Text.types.TEXT1}>
-          Failed to create item
-        </StyledErrorText>
-      )}
     </NewItemContainer>
   );
 };

@@ -38,7 +38,7 @@ export const DrawerContent = styled(flexColumn)`
 export const DrawerHeader = styled(flexColumn)`
   position: sticky;
   z-index: 1001;
-  border-bottom: 1px solid ${COLORS.Secondary.S1};
+  border-bottom: 1px solid ${COLORS.Primary.P1};
   gap: ${cssSpacing.s8};
   padding-bottom: ${cssSpacing.s8};
 `;
