@@ -1,7 +1,6 @@
 import { Dropdown, Text } from "monday-ui-react-core";
 import { useParsedData } from "../../contexts/dataContext";
 import { IDropDownTypes } from "../../types/dropDownType";
-import "../ParsedFieldsDisplay/parsedFieldsStyles.css";
 import { IPosition } from "../../types/parsedDataType";
 import { TitleContainer } from "./styles";
 
@@ -30,6 +29,7 @@ const PositionDropDown = () => {
         }))}
         onChange={(option: IDropDownTypes) => handleGroupChange(option)}
         className="custom-text-field-input"
+        size={Dropdown.sizes.MEDIUM}
       />
     </>
   );

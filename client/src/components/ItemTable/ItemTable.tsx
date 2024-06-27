@@ -148,7 +148,7 @@ const ItemTable = () => {
               columns={tableColumns}
               emptyState={<Text>No items found</Text>}
               errorState={<Text>Failed to load items</Text>}>
-              <TableHeader>
+              <TableHeader className="table-header">
                 {tableColumns.map((col) => (
                   <TableHeaderCell key={col.id} title={col.title} />
                 ))}

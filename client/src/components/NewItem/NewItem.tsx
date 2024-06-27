@@ -5,7 +5,6 @@ import { useParsedData } from "../../contexts/dataContext";
 import { useState } from "react";
 import { createItem } from "../../hooks/useCreateItem";
 import { institutionOptions } from "../../constants/institutionOptions";
-import "../ParsedFieldsDisplay/parsedFieldsStyles.css";
 
 interface NewItemProps {
   existingItems?: boolean;

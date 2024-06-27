@@ -5,7 +5,6 @@ import { StyledSubtext } from "../../styles/globalDivs";
 import { Retry } from "monday-ui-react-core/icons";
 import { useCheckDuplicates } from "../../hooks/useCheckDuplicates";
 import { useParsedData } from "../../contexts/dataContext";
-import "./parsedFieldsStyles.css";
 import PositionDropDown from "../PositionDropDown/PositionDropDown";
 
 const ParsedFieldsDisplay = () => {

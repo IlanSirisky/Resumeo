@@ -1,4 +1,4 @@
-import { MONDAY_API_KEY } from "../constants/mondayQueries";
+import monday from "../configs/mondaySdk";
 
 export const createItem = async (
   boardId: number,
@@ -7,7 +7,7 @@ export const createItem = async (
   name: string,
   email: string,
   phone: string,
-  institution: string,
+  institution: string
 ): Promise<any> => {
   const columnValues = JSON.stringify({
     email_1__1: {
@@ -16,7 +16,7 @@ export const createItem = async (
     },
     text6__1: phone,
     status0__1: groupTitle,
-    dropdown5__1 : institution,
+    dropdown5__1: institution,
   });
 
   const mutation = `
@@ -32,20 +32,11 @@ export const createItem = async (
     }
   `;
 
-  const response = await fetch("https://api.monday.com/v2", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: MONDAY_API_KEY,
-      "API-Version": "2023-10",
-    },
-    body: JSON.stringify({ query: mutation }),
-  });
-
-  const result = await response.json();
-  if (result.errors) {
-    throw new Error(result.errors.map((err: any) => err.message).join(", "));
+  try {
+    const response = await monday.api(mutation);
+    return response.data.create_item;
+  } catch (error) {
+    console.error("Failed to create item:", error);
+    throw error;
   }
-
-  return result.data.create_item;
 };

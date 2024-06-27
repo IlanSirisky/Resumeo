@@ -1,4 +1,4 @@
-import { MONDAY_API_KEY } from "../constants/mondayQueries";
+import monday from "../configs/mondaySdk";
 
 export const addCommentToItem = async (
   itemId: number,
@@ -6,26 +6,18 @@ export const addCommentToItem = async (
 ): Promise<any> => {
   const mutation = `
     mutation {
-      create_update (item_id: ${itemId}, body: "${comment.replace(/"/g, '\\"')}") {
+      create_update (item_id: ${itemId}, body: "${comment.replace(/"/g,'\\"')}") {
         id
       }
     }
   `;
 
-  const response = await fetch("https://api.monday.com/v2", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: MONDAY_API_KEY,
-      "API-Version": "2023-10",
-    },
-    body: JSON.stringify({ query: mutation }),
-  });
+  try {
+    const response = await monday.api(mutation);
 
-  const result = await response.json();
-  if (result.errors) {
-    throw new Error(result.errors.map((err: any) => err.message).join(", "));
+    return response.data.create_update;
+  } catch (error) {
+    console.error("Failed to add comment to item:", error);
+    throw error;
   }
-
-  return result.data.create_update;
 };

@@ -3,9 +3,20 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: "Figtree", sans-serif;
 }
 
 body {
   margin: 0;
   padding: 0;
+}
+
+.custom-text-field-input {
+  border: none !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid #119ecb !important;
+}
+
+.table-header {
+  z-index: 0;
 }

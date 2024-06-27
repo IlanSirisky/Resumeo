@@ -1,6 +1,7 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
-import { MONDAY_API_KEY } from "../constants/mondayQueries";
 import { IItemTypes } from "../types/mondayViewsTypes";
+import { useParsedData } from "../contexts/dataContext";
+import monday from "../configs/mondaySdk";
 
 export const checkDuplicates = async (
   boardId: number,
@@ -28,36 +29,25 @@ export const checkDuplicates = async (
       }
     }
   }
-  `;
+`;
 
-  const response = await fetch("https://api.monday.com/v2", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: MONDAY_API_KEY,
-      "API-Version": "2023-10",
-    },
-    body: JSON.stringify({
-      query: query,
-    }),
-  });
-
-  const result = await response.json();
-  if (result.errors) {
-    throw new Error(result.errors.map((err: any) => err.message).join(", "));
+  const response = await monday.api(query);
+  if (response?.data?.items_page_by_column_values) {
+    return response.data.items_page_by_column_values;
+  } else {
+    throw new Error("Query did not return any items");
   }
-
-  return result.data.items_page_by_column_values;
 };
 
 export const useCheckDuplicates = (
   email: string
 ): UseQueryResult<any, Error> => {
+  const { boardId } = useParsedData();
   return useQuery({
     queryKey: ["checkDuplicates", email],
     queryFn: ({ queryKey }) => {
       const [, email] = queryKey;
-      return checkDuplicates(6888206890, email as string);
+      return checkDuplicates(boardId!, email as string);
     },
     enabled: !!email,
   });
