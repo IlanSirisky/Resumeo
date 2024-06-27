@@ -9,29 +9,22 @@ import {
   TableCell,
   TableHeaderCell,
   Button,
-  Dialog,
-  DialogContentContainer,
-  TextArea,
 } from "monday-ui-react-core";
 import { useCheckDuplicates } from "../../hooks/useCheckDuplicates";
-import {
-  DupsFoundContainer,
-  TableContainer,
-  dialogContainerStyles,
-} from "./styles";
+import { DupsFoundContainer, TableContainer } from "./styles";
 import { Heading } from "monday-ui-react-core/next";
 import NewItem from "../NewItem/NewItem";
 import { useParsedData } from "../../contexts/dataContext";
 import { IItemTypes } from "../../types/mondayViewsTypes";
 import { ITableColumn } from "monday-ui-react-core/dist/types/components/Table/Table/Table.js";
 import { tableColumnTitles } from "../../constants/tableColumns";
-import { addCommentToItem } from "../../hooks/useCreateUpdate";
 import { Comment } from "monday-ui-react-core/icons";
+import Drawer from "../Drawer/Drawer";
 
 const ItemTable = () => {
   const { parsedData, columns } = useParsedData();
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-  const [comment, setComment] = useState<string>("");
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   const { data, error, isLoading } = useCheckDuplicates(
     parsedData?.Email || ""
@@ -43,33 +36,13 @@ const ItemTable = () => {
     return null;
   }
 
-  const handleOpenDialog = (itemId: number) => {
+  const handleDrawerState = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const openDrawerWithItem = (itemId: number) => {
     setSelectedItemId(itemId);
-  };
-
-  const handleCloseDialog = () => {
-    setSelectedItemId(null);
-    setComment("");
-  };
-
-  const modifiers = [
-    {
-      name: "preventOverflow",
-      options: {
-        mainAxis: false,
-      },
-    },
-  ];
-
-  const handleAddComment = async () => {
-    if (selectedItemId && comment) {
-      try {
-        await addCommentToItem(selectedItemId, comment);
-        handleCloseDialog();
-      } catch (error) {
-        console.error("Error adding comment:", error);
-      }
-    }
+    setIsDrawerOpen(true);
   };
 
   const tableColumns: ITableColumn[] = [
@@ -103,41 +76,23 @@ const ItemTable = () => {
       rowData[column.id] = colValue ? colValue.text : "N/A";
     });
     rowData["add_comment"] = (
-      <Dialog
-        showTrigger={[Dialog.hideShowTriggers.CLICK]}
-        hideTrigger={[Dialog.hideShowTriggers.CLICK]}
-        position={Dialog.positions.BOTTOM}
-        modifiers={modifiers}
-        content={
-          <DialogContentContainer
-            type={DialogContentContainer.types.MODAL}
-            style={dialogContainerStyles}>
-            <TextArea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="Write your comment here..."
-              size="large"
-            />
-            <Button
-              onClick={handleAddComment}
-              kind={Button.kinds.SECONDARY}
-              size={Button.sizes.SMALL}>
-              Add Comment
-            </Button>
-          </DialogContentContainer>
-        }>
-        <Button
-          onClick={() => handleOpenDialog(+item.id)}
-          kind={Button.kinds.TERTIARY}>
-          <Comment />
-        </Button>
-      </Dialog>
+      <Button
+        onClick={() => openDrawerWithItem(+item.id)}
+        kind={Button.kinds.TERTIARY}>
+        <Comment />
+      </Button>
     );
     return rowData;
   });
 
   return (
     <TableContainer>
+      <Drawer
+        isOpen={isDrawerOpen}
+        handleDrawerState={handleDrawerState}
+        itemId={selectedItemId}
+        itemName={items.find((item) => +item.id === selectedItemId)?.name || ""}
+      />
       {isLoading && <Loader size={Loader.sizes.MEDIUM} />}
       {error && <Text type={Text.types.TEXT1}>{error.message}</Text>}
       {items && items.length > 0 ? (

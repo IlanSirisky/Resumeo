@@ -19,3 +19,13 @@ export interface IGroupTypes {
   id: string;
   title: string;
 }
+
+export interface ICommentHistory {
+  id: string;
+  body: string;
+  created_at: string;
+  creator: {
+    id: string;
+    name: string;
+  };
+}
