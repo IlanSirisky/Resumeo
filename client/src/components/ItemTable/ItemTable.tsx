@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Text,
   Loader,
@@ -22,16 +22,14 @@ import {
 import { Heading } from "monday-ui-react-core/next";
 import NewItem from "../NewItem/NewItem";
 import { useParsedData } from "../../contexts/dataContext";
-import { getBoardColumns } from "../../hooks/useGetColumns";
-import { IColumnTypes, IItemTypes } from "../../types/mondayViewsTypes";
+import { IItemTypes } from "../../types/mondayViewsTypes";
 import { ITableColumn } from "monday-ui-react-core/dist/types/components/Table/Table/Table.js";
 import { tableColumnTitles } from "../../constants/tableColumns";
 import { addCommentToItem } from "../../hooks/useCreateUpdate";
 import { Comment } from "monday-ui-react-core/icons";
 
 const ItemTable = () => {
-  const { parsedData } = useParsedData();
-  const [columns, setColumns] = useState<IColumnTypes[]>([]);
+  const { parsedData, columns } = useParsedData();
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
   const [comment, setComment] = useState<string>("");
 
@@ -40,19 +38,6 @@ const ItemTable = () => {
   );
 
   const items: IItemTypes[] = data?.items || [];
-
-  useEffect(() => {
-    const fetchColumns = async () => {
-      try {
-        const boardColumns: IColumnTypes[] = await getBoardColumns(6888206890);
-        setColumns(boardColumns);
-      } catch (error) {
-        console.error("Error fetching board columns:", error);
-      }
-    };
-
-    fetchColumns();
-  }, []);
 
   if (!parsedData) {
     return null;

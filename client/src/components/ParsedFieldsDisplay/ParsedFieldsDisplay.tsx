@@ -6,6 +6,7 @@ import { Retry } from "monday-ui-react-core/icons";
 import { useCheckDuplicates } from "../../hooks/useCheckDuplicates";
 import { useParsedData } from "../../contexts/dataContext";
 import "./parsedFieldsStyles.css";
+import PositionDropDown from "../PositionDropDown/PositionDropDown";
 
 const ParsedFieldsDisplay = () => {
   const { parsedData, handleFieldChange } = useParsedData();
@@ -65,6 +66,7 @@ const ParsedFieldsDisplay = () => {
         onChange={(value) => handleFieldChange("University", value)}
         className="custom-text-field-input"
       />
+      <PositionDropDown />
     </ParsedDataContainer>
   );
 };
