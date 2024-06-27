@@ -16,12 +16,15 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
 
   const handleCreateItem = async () => {
     if (!parsedData || !boardId || !parsedData.position) {
+      if (!parsedData?.position) {
+        setCreateSuccess(false);
+      }
       return;
     }
     const institute = institutionOptions.includes(parsedData.University)
       ? parsedData.University
       : "Other";
-    
+
     try {
       const newItem = await createItem(
         boardId,
