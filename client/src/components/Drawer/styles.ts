@@ -11,7 +11,6 @@ export const DrawerWrapper = styled(flexColumn)<{ isOpen: boolean }>`
   height: 100%;
   width: 30%;
   background-color: white;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
   transform: ${({ isOpen }) => (isOpen ? "translateX(0)" : "translateX(100%)")};
   transition: transform 0.3s ease-in-out;
   z-index: 1000;
@@ -31,7 +30,7 @@ export const Backdrop = styled.div<{ isOpen: boolean }>`
 export const DrawerContent = styled(flexColumn)`
   flex: 1;
   padding: ${cssSpacing.s16};
-  gap: ${cssSpacing.s8};
+  gap: ${cssSpacing.s16};
   overflow-y: auto;
 `;
 
