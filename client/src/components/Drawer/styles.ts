@@ -66,3 +66,8 @@ export const CommentContainer = styled(flexColumn)`
 export const CommentHeader = styled(flexRow)`
   justify-content: space-between;
 `;
+
+export const NoCommentsContainer = styled(flexColumn)`
+  gap: ${cssSpacing.s8};
+  align-items: center;
+`;

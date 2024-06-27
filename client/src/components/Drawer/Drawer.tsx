@@ -10,6 +10,7 @@ import {
   CommentsContainer,
   TextAreaContainer,
   DrawerHeader,
+  NoCommentsContainer,
 } from "./styles";
 import { Close } from "monday-ui-react-core/icons";
 import { addCommentToItem } from "../../hooks/useCreateUpdate";
@@ -97,19 +98,27 @@ const Drawer = ({
             </div>
           </TextAreaContainer>
           <CommentsContainer>
-            {commentHistory?.map((comment) => (
-              <CommentContainer key={comment.id}>
-                <CommentHeader>
-                  <Text type={Text.types.TEXT2} weight={Text.weights.BOLD}>
-                    {comment.creator.name}
-                  </Text>
-                  <Text type={Text.types.TEXT3}>
-                    {formatDate(comment.created_at)}
-                  </Text>
-                </CommentHeader>
-                <Text ellipsis={false}>{stripHtmlTags(comment.body)}</Text>
-              </CommentContainer>
-            ))}
+            {commentHistory?.length !== 0 ? (
+              commentHistory?.map((comment) => (
+                <CommentContainer key={comment.id}>
+                  <CommentHeader>
+                    <Text type={Text.types.TEXT2} weight={Text.weights.BOLD}>
+                      {comment.creator.name}
+                    </Text>
+                    <Text type={Text.types.TEXT3}>
+                      {formatDate(comment.created_at)}
+                    </Text>
+                  </CommentHeader>
+                  <Text ellipsis={false}>{stripHtmlTags(comment.body)}</Text>
+                </CommentContainer>
+              ))
+            ) : (
+              <NoCommentsContainer>
+                <Text type={Text.types.TEXT1}>
+                  No updates yet for this item
+                </Text>
+              </NoCommentsContainer>
+            )}
           </CommentsContainer>
         </DrawerContent>
       </DrawerWrapper>
