@@ -1,7 +1,16 @@
 import monday from "../configs/mondaySdk";
+import { IColumnTypes } from "../types/mondayViewsTypes";
+
+const mapColumns = (columns: IColumnTypes[]): Record<string, string> => {
+  return columns.reduce((acc, column) => {
+    acc[column.title] = column.id;
+    return acc;
+  }, {} as Record<string, string>);
+};
 
 export const createItem = async (
   boardId: number,
+  columns: IColumnTypes[],
   groupId: string,
   groupTitle: string,
   name: string,
@@ -9,14 +18,16 @@ export const createItem = async (
   phone: string,
   institution: string
 ): Promise<any> => {
+  const columnMap = mapColumns(columns);
+
   const columnValues = JSON.stringify({
-    email_1__1: {
+    [columnMap["Email"]]: {
       email: email,
       text: email,
     },
-    text6__1: phone,
-    status0__1: groupTitle,
-    dropdown5__1: institution,
+    [columnMap["Phone"]]: phone,
+    [columnMap["Position"]]: groupTitle,
+    [columnMap["Institution"]]: institution,
   });
 
   const mutation = `

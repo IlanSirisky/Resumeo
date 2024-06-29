@@ -4,26 +4,23 @@ import { NewItemContainer } from "./styles";
 import { useParsedData } from "../../contexts/dataContext";
 import { createItem } from "../../hooks/useCreateItem";
 import { institutionOptions } from "../../constants/institutionOptions";
-import monday from "../../configs/mondaySdk";
+import { showNotification } from "../../configs/mondaySdk";
 
 interface NewItemProps {
   existingItems?: boolean;
 }
 
 const NewItem = ({ existingItems = false }: NewItemProps) => {
-  const { parsedData, boardId } = useParsedData();
+  const { parsedData, boardId, columns } = useParsedData();
 
   const handleCreateItem = async () => {
     if (!parsedData || !boardId || !parsedData.position) {
-      if (!parsedData?.position) {
-        monday.execute("notice", {
-          message: "Position is required",
-          type: "error",
-          timeout: 5000,
-        });
+      if (!parsedData?.position || !!parsedData?.Name || !!parsedData?.Email) {
+        showNotification("Name, Email, and Position are required", "error");
       }
       return;
     }
+
     const institute = institutionOptions.includes(parsedData.University)
       ? parsedData.University
       : "Other";
@@ -31,6 +28,7 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
     try {
       await createItem(
         boardId,
+        columns,
         parsedData.position?.groupId,
         parsedData.position?.groupTitle,
         parsedData.Name,
@@ -38,17 +36,9 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
         parsedData.Phone,
         institute
       );
-      monday.execute("notice", {
-        message: "Item created successfully",
-        type: "success",
-        timeout: 5000,
-      });
+      showNotification("Item created successfully", "success");
     } catch (error) {
-      monday.execute("notice", {
-        message: "Failed to create item",
-        type: "error",
-        timeout: 5000,
-      });
+      showNotification("Failed to create item", "error");
     }
   };
 

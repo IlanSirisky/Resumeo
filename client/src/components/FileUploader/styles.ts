@@ -22,6 +22,8 @@ export const DropZone = styled(flexColumn)`
 export const FileInfo = styled(flexRow)`
   gap: ${cssSpacing.s8};
   align-items: center;
+  width: 400px;
+  justify-content: center;
 `;
 
 export const RemoveFileButton = styled.button`

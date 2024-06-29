@@ -19,7 +19,7 @@ import { ICommentHistory } from "../../types/mondayViewsTypes";
 import { useEffect, useState } from "react";
 import { formatDate } from "../../utils/formatDate";
 import { stripHtmlTags } from "../../utils/stripHtmlTags";
-import monday from "../../configs/mondaySdk";
+import { showNotification } from "../../configs/mondaySdk";
 
 interface DrawerProps {
   isOpen: boolean;
@@ -64,18 +64,9 @@ const Drawer = ({
         const updatedComments = await fetchItemCommentHistory(itemId);
         setCommentHistory(updatedComments);
         setComment("");
-        monday.execute("notice", {
-          message: "Comment added successfully",
-          type: "success",
-          timeout: 5000,
-        });
+        showNotification("Comment added successfully", "success");
       } catch (error) {
-        console.error("Error adding comment:", error);
-        monday.execute("notice", {
-          message: "Failed to add comment",
-          type: "error",
-          timeout: 5000,
-        });
+        console.error("Failed to add comment", error);
       }
     }
   };

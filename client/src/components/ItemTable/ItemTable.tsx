@@ -29,8 +29,8 @@ const ItemTable = () => {
   const { data, error, isLoading } = useCheckDuplicates(
     parsedData?.Email || ""
   );
-
-  const items: IItemTypes[] = data?.items || [];
+  
+  const items: IItemTypes[] = data || [];
 
   if (!parsedData) {
     return null;

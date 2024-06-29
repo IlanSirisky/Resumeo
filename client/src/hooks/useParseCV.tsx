@@ -1,7 +1,8 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import axios from "axios";
+import { ParsedDataType } from "../types/parsedDataType";
 
-export const parseCV = async (file: File): Promise<any> => {
+export const parseCV = async (file: File): Promise<ParsedDataType> => {
   const formData = new FormData();
   formData.append("pdf", file);
 
@@ -13,7 +14,7 @@ export const parseCV = async (file: File): Promise<any> => {
         "Content-Type": "multipart/form-data",
       },
     }
-  );
+  );  
   return response.data;
 };
 

@@ -13,7 +13,8 @@ import { StyledSubtext } from "../../styles/globalDivs";
 import { useParsedData } from "../../contexts/dataContext";
 
 const FileUploader = () => {
-  const { file, setFile, handleParseSuccess, handleClearFile } = useParsedData();
+  const { file, setFile, handleParseSuccess, handleClearFile } =
+    useParsedData();
   const { mutate: parseCV, status, error } = useParseCV();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -81,7 +82,7 @@ const FileUploader = () => {
       ) : (
         <DropZone>
           <FileInfo>
-            <Heading type={Heading.types.H3}>
+            <Heading type={Heading.types.H3} ellipsis>
               {file.name} - {(file.size / 1024).toFixed(2)} KB
             </Heading>
             <RemoveFileButton onClick={handleRemoveFile}>✕</RemoveFileButton>

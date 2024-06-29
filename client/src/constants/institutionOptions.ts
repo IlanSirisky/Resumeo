@@ -9,4 +9,5 @@ export const institutionOptions = [
   "Technion",
   "Tel Aviv University",
   "Weizmann Institute",
+  "",
 ];

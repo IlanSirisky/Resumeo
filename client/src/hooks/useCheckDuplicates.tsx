@@ -32,8 +32,8 @@ export const checkDuplicates = async (
 `;
 
   const response = await monday.api(query);
-  if (response?.data?.items_page_by_column_values) {
-    return response.data.items_page_by_column_values;
+  if (response?.data?.items_page_by_column_values.items) {
+    return response.data.items_page_by_column_values.items;
   } else {
     throw new Error("Query did not return any items");
   }
@@ -41,7 +41,7 @@ export const checkDuplicates = async (
 
 export const useCheckDuplicates = (
   email: string
-): UseQueryResult<any, Error> => {
+): UseQueryResult<IItemTypes[], Error> => {
   const { boardId } = useParsedData();
   return useQuery({
     queryKey: ["checkDuplicates", email],
