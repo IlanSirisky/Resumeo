@@ -3,8 +3,9 @@ import { StyledSubtext } from "../../styles/globalDivs";
 import { NewItemContainer } from "./styles";
 import { useParsedData } from "../../contexts/dataContext";
 import { createItem } from "../../hooks/useCreateItem";
-import { institutionOptions } from "../../constants/institutionOptions";
 import { showNotification } from "../../configs/mondaySdk";
+import { useEffect, useState } from "react";
+import { parseSettingsStrToLabels } from "../../utils/parseColumnSettings";
 // import { addResumeToItem } from "../../hooks/useAddFile";
 
 interface NewItemProps {
@@ -13,6 +14,18 @@ interface NewItemProps {
 
 const NewItem = ({ existingItems = false }: NewItemProps) => {
   const { parsedData, boardId, columns } = useParsedData();
+  const [institutionOptions, setInstitutionOptions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const institutionCol = columns.find(
+      (col) => col.title === "Institution"
+    )?.settings_str;
+
+    if (institutionCol) {
+      const options = [...parseSettingsStrToLabels(institutionCol), ""];
+      setInstitutionOptions(options);
+    }
+  }, [columns]);
 
   const handleCreateItem = async () => {
     if (!parsedData || !boardId || !parsedData?.group) {

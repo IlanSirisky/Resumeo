@@ -9,6 +9,7 @@ query ($boardId: [ID!]!) {
       id
       title
       type
+      settings_str
     }
   }
 }

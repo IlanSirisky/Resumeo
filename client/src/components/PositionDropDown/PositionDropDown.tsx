@@ -2,10 +2,23 @@ import { Dropdown, Text } from "monday-ui-react-core";
 import { useParsedData } from "../../contexts/dataContext";
 import { IDropDownTypes } from "../../types/dropDownType";
 import { TitleContainer } from "../GroupDropDown/styles";
-import { positionOptions } from "../../constants/positionOptions";
+import { useEffect, useState } from "react";
+import { parseSettingsStrToOptions } from "../../utils/parseColumnSettings";
 
 const PositionDropDown = () => {
-  const { handleFieldChange } = useParsedData();
+  const { handleFieldChange, columns } = useParsedData();
+  const [positionOptions, setPositionOptions] = useState<IDropDownTypes[]>([]);
+
+  useEffect(() => {
+    const positionColSettings = columns.find(
+      (col) => col.title === "Position"
+    )?.settings_str;
+
+    if (positionColSettings) {
+      const options = parseSettingsStrToOptions(positionColSettings);
+      setPositionOptions(options);
+    }
+  }, [columns]);
 
   const handlePositionChange = (option: IDropDownTypes) => {
     const position = option.label;
@@ -18,10 +31,7 @@ const PositionDropDown = () => {
         <Text>Position</Text>
       </TitleContainer>
       <Dropdown
-        options={positionOptions.map((group) => ({
-          value: group.id,
-          label: group.title,
-        }))}
+        options={positionOptions}
         onChange={(option: IDropDownTypes) => handlePositionChange(option)}
         className="custom-text-field-input"
         size={Dropdown.sizes.MEDIUM}

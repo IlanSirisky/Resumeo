@@ -2,6 +2,7 @@ export interface IColumnTypes {
   id: string;
   title: string;
   type: string;
+  settings_str: string;
 }
 
 export interface IColumnValueTypes {
