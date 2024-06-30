@@ -4,6 +4,7 @@ import PyPDF2
 import requests
 from flask import Flask, request, jsonify, Blueprint, current_app
 from dotenv import load_dotenv
+import json
 
 load_dotenv()
 
@@ -50,6 +51,52 @@ def upload_file():
         return jsonify({'error': str(e)}), 500  # Return the exception message to the client for debugging
 
     return jsonify(extracted_data), 200
+
+
+@main.route('/add_resume', methods=['POST'])
+def add_resume_to_item():
+    # Extract metadata from headers or form-fields
+    api_key = request.headers.get('Client-Token')  # Ensure this is the correct header name
+    item_id = request.form['item_id']  # Ensure that item_id is passed as part of the form data
+
+    # Check if the resume file is in the request
+    if 'resume' not in request.files:
+        return jsonify({'error': 'No resume file part'}), 400
+    file = request.files['resume']
+
+    # Ensure the API key is present
+    if not api_key:
+        return jsonify({'error': 'API key is missing from the headers'}), 401
+
+    # Prepare the API request to Monday.com
+    url = "https://api.monday.com/v2/file"
+    headers = {
+        "Authorization": f"{api_key}",
+        "API-Version": "2024-04"
+    }
+    query = f"""
+    mutation add_file($file: File!) {{
+        add_file_to_column(item_id: {item_id}, column_id: "files__1", file: $file) {{
+            id
+        }}
+    }}
+    """
+    payload = {
+        'query': query,
+        'map': '{"file":"variables.file"}'  # Ensuring proper mapping
+    }
+    files = [
+        ('file', (file.filename, file.stream, 'application/octet-stream'))
+    ]
+
+    # Sending the request to Monday.com
+    response = requests.post(url, headers=headers, data=payload, files=files)
+    if response.status_code == 200:
+        return jsonify(response.json()), 200
+    else:
+        return jsonify({'error': 'Failed to upload file', 'details': response.text}), response.status_code
+
+
 
 def process_text_with_openai(text):
     api_key = validate_api_key()  # Validate and get the API key
