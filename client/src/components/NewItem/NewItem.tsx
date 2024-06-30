@@ -26,6 +26,8 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
       ? parsedData.University
       : "Other";
 
+    // const cvColId = columns.find((col) => col.title === "CV")?.id;
+
     try {
       await createItem(
         boardId,
@@ -37,7 +39,9 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
         parsedData.Phone,
         institute
       );
-      // addResumeToItem(newItem.id, file!);
+      // if (newItem && cvColId) {
+      //   addResumeToItem(newItem.id, file!, cvColId!);
+      // }
       showNotification("Item created successfully", "success");
     } catch (error) {
       showNotification("Failed to create item", "error");
