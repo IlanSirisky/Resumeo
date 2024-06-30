@@ -5,6 +5,7 @@ import { useParsedData } from "../../contexts/dataContext";
 import { createItem } from "../../hooks/useCreateItem";
 import { institutionOptions } from "../../constants/institutionOptions";
 import { showNotification } from "../../configs/mondaySdk";
+// import { addResumeToItem } from "../../hooks/useAddFile";
 
 interface NewItemProps {
   existingItems?: boolean;
@@ -14,9 +15,9 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
   const { parsedData, boardId, columns } = useParsedData();
 
   const handleCreateItem = async () => {
-    if (!parsedData || !boardId || !parsedData.position) {
-      if (!parsedData?.position || !!parsedData?.Name || !!parsedData?.Email) {
-        showNotification("Name, Email, and Position are required", "error");
+    if (!parsedData || !boardId || !parsedData?.group) {
+      if (!parsedData?.group || !!parsedData?.Name || !!parsedData?.Email) {
+        showNotification("Name, Email, and Group are required", "error");
       }
       return;
     }
@@ -29,13 +30,14 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
       await createItem(
         boardId,
         columns,
-        parsedData.position?.groupId,
-        parsedData.position?.groupTitle,
+        parsedData.group?.id,
+        parsedData?.position || "",
         parsedData.Name,
         parsedData.Email,
         parsedData.Phone,
         institute
       );
+      // addResumeToItem(newItem.id, file!);
       showNotification("Item created successfully", "success");
     } catch (error) {
       showNotification("Failed to create item", "error");

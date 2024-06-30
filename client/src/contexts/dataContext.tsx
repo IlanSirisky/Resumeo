@@ -5,7 +5,7 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { IPosition, ParsedDataType } from "../types/parsedDataType";
+import { ParsedDataType } from "../types/parsedDataType";
 import monday from "../configs/mondaySdk";
 import { IColumnTypes, IGroupTypes } from "../types/mondayViewsTypes";
 import { getBoardInfoQuery } from "../constants/mondayQueries";
@@ -20,7 +20,7 @@ interface DataContextType {
   setFile: (file: File | null) => void;
   handleParseSuccess: (data: any) => void;
   handleClearFile: () => void;
-  handleFieldChange: (field: string, value: string | IPosition) => void;
+  handleFieldChange: (field: string, value: string | IGroupTypes) => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -75,7 +75,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     setParsedData(undefined);
   };
 
-  const handleFieldChange = (field: string, value: string | IPosition) => {
+  const handleFieldChange = (field: string, value: string | IGroupTypes) => {
     setParsedData((prevData: any) => ({ ...prevData, [field]: value }));
   };
 

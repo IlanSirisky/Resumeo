@@ -1,17 +1,14 @@
 import { Dropdown, Text } from "monday-ui-react-core";
 import { useParsedData } from "../../contexts/dataContext";
 import { IDropDownTypes } from "../../types/dropDownType";
-import { IPosition } from "../../types/parsedDataType";
-import { TitleContainer } from "./styles";
+import { TitleContainer } from "../GroupDropDown/styles";
+import { positionOptions } from "../../constants/positionOptions";
 
 const PositionDropDown = () => {
-  const { handleFieldChange, groups } = useParsedData();
+  const { handleFieldChange } = useParsedData();
 
-  const handleGroupChange = (option: IDropDownTypes) => {
-    const position: IPosition = {
-      groupId: option.value,
-      groupTitle: option.label,
-    };
+  const handlePositionChange = (option: IDropDownTypes) => {
+    const position = option.label;
     handleFieldChange("position", position);
   };
 
@@ -19,15 +16,13 @@ const PositionDropDown = () => {
     <div>
       <TitleContainer>
         <Text>Position</Text>
-        <Text style={{ color: "red" }}>*</Text>
       </TitleContainer>
       <Dropdown
-        searchable={false}
-        options={groups.map((group) => ({
+        options={positionOptions.map((group) => ({
           value: group.id,
           label: group.title,
         }))}
-        onChange={(option: IDropDownTypes) => handleGroupChange(option)}
+        onChange={(option: IDropDownTypes) => handlePositionChange(option)}
         className="custom-text-field-input"
         size={Dropdown.sizes.MEDIUM}
       />

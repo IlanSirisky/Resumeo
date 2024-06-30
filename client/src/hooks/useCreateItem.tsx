@@ -12,7 +12,7 @@ export const createItem = async (
   boardId: number,
   columns: IColumnTypes[],
   groupId: string,
-  groupTitle: string,
+  position: string,
   name: string,
   email: string,
   phone: string,
@@ -26,7 +26,7 @@ export const createItem = async (
       text: email,
     },
     [columnMap["Phone"]]: phone,
-    [columnMap["Position"]]: groupTitle,
+    [columnMap["Position"]]: position,
     [columnMap["Institution"]]: institution,
   });
 

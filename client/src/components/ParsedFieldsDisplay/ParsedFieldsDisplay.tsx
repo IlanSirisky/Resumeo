@@ -3,9 +3,10 @@ import { Heading } from "monday-ui-react-core/next";
 import { ParsedDataContainer, ParsedDataHeading } from "./styles";
 import { StyledSubtext } from "../../styles/globalDivs";
 import { useParsedData } from "../../contexts/dataContext";
-import PositionDropDown from "../PositionDropDown/PositionDropDown";
+import GroupDropDown from "../GroupDropDown/GroupDropDown";
 import { useCallback, useEffect } from "react";
 import { debounce } from "../../utils/debounce";
+import PositionDropDown from "../PositionDropDown/PositionDropDown";
 
 const ParsedFieldsDisplay = () => {
   const { parsedData, handleFieldChange } = useParsedData();
@@ -71,6 +72,7 @@ const ParsedFieldsDisplay = () => {
         onChange={(value) => handleFieldChange("University", value)}
         className="custom-text-field-input"
       />
+      <GroupDropDown />
       <PositionDropDown />
     </ParsedDataContainer>
   );
