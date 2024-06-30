@@ -17,6 +17,7 @@ interface DataContextType {
   boardId: number | null;
   groups: IGroupTypes[];
   columns: IColumnTypes[];
+  workspaceBoards: number[];
   setFile: (file: File | null) => void;
   handleParseSuccess: (data: any) => void;
   handleClearFile: () => void;
@@ -33,6 +34,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
   const [boardId, setBoardId] = useState<number | null>(null);
   const [groups, setGroups] = useState<IGroupTypes[]>([]);
   const [columns, setColumns] = useState<IColumnTypes[]>([]);
+  const [workspaceBoards, setWorkspaceBoards] = useState<number[]>([]);
 
   useEffect(() => {
     monday
@@ -40,6 +42,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
       .then((res) => {
         const context = res.data as any;
         const contextBoardId = context.boardId;
+        setWorkspaceBoards(context.boardIds);
 
         if (contextBoardId) {
           setBoardId(contextBoardId);
@@ -92,6 +95,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
         boardId,
         groups,
         columns,
+        workspaceBoards,
       }}>
       {children}
     </DataContext.Provider>

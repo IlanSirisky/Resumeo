@@ -4,14 +4,14 @@ import { useParsedData } from "../contexts/dataContext";
 import monday from "../configs/mondaySdk";
 
 export const checkDuplicates = async (
-  boardId: number,
-  email: string
+  email: string,
+  workspaceBoards: number[],
 ): Promise<IItemTypes[]> => {
   const query = `
   query {
     items_page_by_column_values(
       limit: 50, 
-      board_id: ${boardId}, 
+      board_id: ${workspaceBoards}, 
       columns: [
         {
           column_id: "email_1__1", 
@@ -42,12 +42,12 @@ export const checkDuplicates = async (
 export const useCheckDuplicates = (
   email: string
 ): UseQueryResult<IItemTypes[], Error> => {
-  const { boardId } = useParsedData();
+  const { workspaceBoards } = useParsedData();
   return useQuery({
     queryKey: ["checkDuplicates", email],
     queryFn: ({ queryKey }) => {
       const [, email] = queryKey;
-      return checkDuplicates(boardId!, email as string);
+      return checkDuplicates( email as string, workspaceBoards!,);
     },
     enabled: !!email,
   });
