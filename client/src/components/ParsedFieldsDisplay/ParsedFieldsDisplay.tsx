@@ -2,18 +2,26 @@ import { TextField } from "monday-ui-react-core";
 import { Heading } from "monday-ui-react-core/next";
 import { ParsedDataContainer, ParsedDataHeading } from "./styles";
 import { StyledSubtext } from "../../styles/globalDivs";
-import { Retry } from "monday-ui-react-core/icons";
-import { useCheckDuplicates } from "../../hooks/useCheckDuplicates";
 import { useParsedData } from "../../contexts/dataContext";
 import PositionDropDown from "../PositionDropDown/PositionDropDown";
+import { useCallback, useEffect } from "react";
+import { debounce } from "../../utils/debounce";
 
 const ParsedFieldsDisplay = () => {
   const { parsedData, handleFieldChange } = useParsedData();
-  const { refetch } = useCheckDuplicates(parsedData?.Email || "");
 
-  const handleCheckDuplicates = () => {
-    refetch();
-  };
+  const debouncedHandleFieldChange = useCallback(
+    debounce((field: string, value: string) => {
+      handleFieldChange(field, value);
+    }, 500),
+    []
+  );
+
+  useEffect(() => {
+    return () => {
+      debouncedHandleFieldChange.cancel();
+    };
+  }, [debouncedHandleFieldChange]);
 
   if (!parsedData) {
     return null;
@@ -42,10 +50,8 @@ const ParsedFieldsDisplay = () => {
         placeholder="Insert Email"
         size={TextField.sizes.MEDIUM}
         value={parsedData.Email}
-        onChange={(value) => handleFieldChange("Email", value)}
+        onChange={(value) => debouncedHandleFieldChange("Email", value)}
         requiredAsterisk={true}
-        iconName={Retry}
-        onIconClick={handleCheckDuplicates}
         className="custom-text-field-input"
       />
       <TextField
