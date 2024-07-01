@@ -6,14 +6,14 @@ import { createItem } from "../../hooks/useCreateItem";
 import { showNotification } from "../../configs/mondaySdk";
 import { useEffect, useState } from "react";
 import { parseSettingsStrToLabels } from "../../utils/parseColumnSettings";
-// import { addResumeToItem } from "../../hooks/useAddFile";
+import { addResumeToItem } from "../../hooks/useAddFile";
 
 interface NewItemProps {
   existingItems?: boolean;
 }
 
 const NewItem = ({ existingItems = false }: NewItemProps) => {
-  const { parsedData, boardId, columns } = useParsedData();
+  const { parsedData, boardId, columns, file } = useParsedData();
   const [institutionOptions, setInstitutionOptions] = useState<string[]>([]);
 
   useEffect(() => {
@@ -39,10 +39,10 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
       ? parsedData.University
       : "Other";
 
-    // const cvColId = columns.find((col) => col.title === "CV")?.id;
+    const cvColId = columns.find((col) => col.title === "CV")?.id;    
 
     try {
-      await createItem(
+      const newItem = await createItem(
         boardId,
         columns,
         parsedData.group?.id,
@@ -52,9 +52,9 @@ const NewItem = ({ existingItems = false }: NewItemProps) => {
         parsedData.Phone,
         institute
       );
-      // if (newItem && cvColId) {
-      //   addResumeToItem(newItem.id, file!, cvColId!);
-      // }
+      if (newItem && cvColId) {
+        addResumeToItem(newItem.id, file!, cvColId!);
+      }
       showNotification("Item created successfully", "success");
     } catch (error) {
       showNotification("Failed to create item", "error");
